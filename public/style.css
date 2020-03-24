@@ -1,0 +1,136 @@
+html,
+body {
+  height: 100%;
+}
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: sans-serif;
+  margin: 0;
+  line-height: 1.5em;
+  background: #e6e6e6;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+svg {
+  /*width: inherit;
+  height: inherit;*/
+  height: 100%;
+  width: inherit;
+}
+
+.corners {
+  background: #f6f6f6;
+  position: relative;
+  width: 80vw;
+  height: 80vw;
+  max-height: 80vh;
+  box-shadow: 0 1px 7px hsla(0, 0%, 0%, 0.2);
+}
+
+section {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  margin: 15px 0;
+}
+
+/* Corner Effect */
+.corners:after,
+.corners:before {
+  background: #e6e6e6;
+  content: "";
+  height: 50px;
+  position: absolute;
+  top: -25px;
+  width: 100px;
+  box-shadow: 0 5px 10px -7px hsla(0, 0%, 0%, 0.5);
+}
+.corners:after {
+  left: -50px;
+  transform: rotate(-45deg);
+}
+.corners:before {
+  right: -50px;
+  transform: rotate(45deg);
+}
+
+/* neuomophi bla */
+section {
+  display: flex;
+  flex-direction: column;
+  font-size: 3vw;
+}
+input {
+  margin-top: 1vw;
+  outline: 0;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  position: relative;
+  background: #eee;
+  box-shadow: inset -6px -6px 9px 0px white,
+    inset 6px 6px 9px 0px rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 16px;
+  padding: 15px 16px;
+}
+input:hover {
+  border-color: white;
+}
+input:active,
+input:focus {
+  background: white;
+}
+input[type="checkbox"],
+input[type="radio"] {
+  cursor: pointer;
+  background: #eee;
+  box-shadow: -6px -6px 9px 0px white, 6px 6px 9px 0px rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 16px;
+  height: 3vw;
+  width: 3vw;
+  padding: 0px;
+  margin-right: 15px;
+  margin-left: 20px;
+  vertical-align: -0.5vw;
+}
+input[type="checkbox"]:hover,
+input[type="radio"]:hover {
+  border-color: white;
+}
+input[type="checkbox"]:checked,
+input[type="radio"]:checked {
+  background: #eee;
+  box-shadow: inset -6px -6px 9px 0px white,
+    inset 6px 6px 9px 0px rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 16px;
+}
+input[type="checkbox"]:checked:hover,
+input[type="radio"]:checked:hover {
+  border-color: white;
+}
+
+input[type="checkbox"] {
+  border-radius: 4px;
+}
+input[type="checkbox"]:checked {
+  border-radius: 4px;
+}
+input[type="checkbox"]:checked:after {
+  content: "✓";
+  display: block;
+  position: absolute;
+  width: 3vw;
+  height: 3vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-shadow: 6px 6px 9px rgba(0, 0, 0, 0.2);
+}
