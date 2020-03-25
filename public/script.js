@@ -11,53 +11,90 @@ Date.prototype.getWeekNumber = function() {
 const $ = document.querySelector.bind(document);
 const $$ = document.querySelectorAll.bind(document);
 
-const colorz = [
-  "black",
-  "white",
-  "darkblue",
-  "red",
-  "orange",
-  "green",
-  "blue",
-  "brown"
-];
+const colors = [ "darkblue", "red", "orange", "green", "blue", "brown"];
 
-const shuffle = (array, seed) => {
-  let currentIndex = array.length,
-    temporaryValue,
-    randomIndex;
-  seed = seed || 1;
-  let random = function() {
-    var x = Math.sin(seed++) * 10000;
-    return x - Math.floor(x);
-  };
-  // While there remain elements to shuffle...
-  while (0 !== currentIndex) {
-    // Pick a remaining element...
-    randomIndex = Math.floor(random() * currentIndex);
-    currentIndex -= 1;
-    // And swap it with the current element.
-    temporaryValue = array[currentIndex];
-    array[currentIndex] = array[randomIndex];
-    array[randomIndex] = temporaryValue;
+const start = new Date("2020-01-01");
+
+//Tage zwischen
+const daysBetween = (one, another) => {
+  return Math.round(Math.abs(+one - +another) / 8.64e7);
+};
+
+//Kombinationen
+const perm = xs => {
+  let ret = [];
+
+  for (let i = 0; i < xs.length; i = i + 1) {
+    let rest = perm(xs.slice(0, i).concat(xs.slice(i + 1)));
+
+    if (!rest.length) {
+      ret.push([xs[i]]);
+    } else {
+      for (let j = 0; j < rest.length; j = j + 1) {
+        ret.push([xs[i]].concat(rest[j]));
+      }
+    }
   }
-  return array;
+  return ret;
+};
+
+//Nächstes Datum
+function nextDate(dayIndex) {
+  var today = new Date();
+  today.setDate(
+    today.getDate() + ((dayIndex - 1 - today.getDay() + 7) % 7) + 1
+  );
+  return today;
+}
+
+//Tag hinzufügen
+Date.prototype.addDays = days => {
+  return new Date(this.valueOf() + days * 864e5);
 };
 
 {
   const d = new Date();
-  const _wDay = d.getDay() - 1;
+  const _wDay = d.getDay() + 1;
   const _wNum = d.getWeekNumber();
+  const _totalDay = daysBetween(start, new Date());
   const chk = $$("input")[_wDay];
-  chk && [($$("input")[_wDay].checked = true)];
+  chk && [($$("input")[_wDay - 2].checked = true)];
 
-  $("week>val").innerText = _wNum;
-  
-  const col = shuffle(colorz, _wNum)[0];
-  
-  for (const stroke of $$("svg>g>path")){
+  const permData = perm(colors);
+
+  //calc initial color
+  const col = permData[_totalDay][0];
+
+  //fill week nr
+  $("#week>val").innerText = _wNum;
+  $("#day>input").value = _totalDay;
+  $("#color>val").innerText = col;
+  $("#color>val").style.background = "rgba(255,255,255,.4)";
+  $("#color>val").style.color = col;
+
+  //fill all white
+  for (const stroke of $$("svg>g>path")) {
     stroke.style.stroke = "white";
   }
-    $("svg>g>path#main").style.fill = col;
 
+  $("svg>g>path#main").style.fill = permData[_totalDay][0];
+
+  $("#day>input").addEventListener("change", e => {
+    console.log(e.target.value)
+  })
+  
+  
+  for (const _input of $$("input[type=radio]")) {
+    _input.addEventListener("change", e => {
+      const realDay = _wDay;
+
+      //calc new day
+      const newDay = daysBetween(start, +nextDate(e.target.value));
+      //fill new day
+      $("#day>input").value = newDay;
+
+      //fill color
+      $("svg>g>path#main").style.fill = permData[newDay];
+    });
+  }
 }

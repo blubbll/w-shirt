@@ -35,8 +35,12 @@ svg {
 section {
   position: absolute;
   top: 0;
-  width: 100%;
   margin: 15px 0;
+  border: 1px dashed black;
+}
+section h2 {
+  margin-left: 5px;
+  font-size: 4vw;
 }
 
 /* Corner Effect */
@@ -79,6 +83,16 @@ input {
   border-radius: 16px;
   padding: 15px 16px;
 }
+label {
+  cursor: pointer;
+  user-select: none;
+}
+label:hover {
+  background: cyan;
+}
+label:active {
+  filter: contrast(0.8);
+}
 input:hover {
   border-color: white;
 }
@@ -86,10 +100,17 @@ input:active,
 input:focus {
   background: white;
 }
-week {
-  margin: 15px;
+t {
+  margin: 1vw;
+  text-align: right;
 }
-week val {
+t > input {
+  width: 7vw;
+  text-align: right;
+  padding-left: 0;
+  padding-right: 0;
+}
+t > val {
   color: cyan;
   padding: 0 2px 2px 0;
   outline: 1px dashed rgba(0, 0, 0, 0.1);
@@ -107,9 +128,8 @@ input[type="radio"] {
   width: 3vw;
   padding: 0px;
 
-  vertical-align: -0.5vw;
-  margin: 15px;
-  vertical-align: -15px;
+  margin: 1vw;
+  vertical-align: -1vw;
 }
 input[type="checkbox"]:hover,
 input[type="radio"]:hover {
