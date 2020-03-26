@@ -97,9 +97,9 @@
           <label> <input type="radio" name="checkbox" value="3" />Mi. </label>
           <label> <input type="radio" name="checkbox" value="4" />Do. </label>
           <label> <input type="radio" name="checkbox" value="5" />Fr. </label>
-          <t id="day"> Tag: <input type="number"/></t>
-          <t id="week"> Woche: <val></val></t>
-          <t id="color"> Farbe: <val></val> </t>
+          <t id="day"> Tag: <input type="number" data-bind="value: Time.totalDay2"/></t>
+          <t id="week"> Woche: <val data-bind="text: Time.week"></val></t>
+          <t id="color"> Farbe: <val data-bind="text: color"></val> </t>
         </form>
       </section>
     </div>

@@ -1,3 +1,5 @@
+const { ko } = window;
+
 Date.prototype.getWeekNumber = function() {
   var d = new Date(
     Date.UTC(this.getFullYear(), this.getMonth(), this.getDate())
@@ -11,7 +13,7 @@ Date.prototype.getWeekNumber = function() {
 const $ = document.querySelector.bind(document);
 const $$ = document.querySelectorAll.bind(document);
 
-const colors = [ "darkblue", "red", "orange", "green", "blue", "brown"];
+const colors = ["darkblue", "red", "orange", "green", "blue", "brown"];
 
 const start = new Date("2020-01-01");
 
@@ -52,7 +54,7 @@ Date.prototype.addDays = days => {
   return new Date(this.valueOf() + days * 864e5);
 };
 
-{
+/*{
   const d = new Date();
   const _wDay = d.getDay() + 1;
   const _wNum = d.getWeekNumber();
@@ -98,3 +100,39 @@ Date.prototype.addDays = days => {
     });
   }
 }
+*/
+
+const tModel = {
+  Time: {
+    weekday: ko.observable(0),
+    totalDay2: ko.observable(0),
+    totalDay: { value: ko.observable(0) },
+    week: ko.observable(0)
+  },
+  color: ko.observable("gold"),
+
+  toggleFoodlist: () => {
+    tModel.Food.listExpanded(!tModel.Food.listExpanded());
+  }
+};
+
+{
+  tModel.Time.totalDay.computer = ko.computed({
+    //return a formatted price
+    read: () => {
+      return tModel.Time.totalDay.value();
+    },
+    //if the value changes, make sure that we store a number back to price
+    write: newValue => {
+      tModel.Time.totalDay.value(newValue);
+    },
+    owner: this
+  });
+}
+
+tModel.Time.week.subscribe(function(newText) {
+  console.log(newText);
+});
+
+//bindings
+ko.applyBindings(tModel);
