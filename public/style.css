@@ -97,7 +97,13 @@ label {
 label:hover {
   background: cyan;
 }
-
+label[disabled] input {
+  background: gray;
+}
+label[disabled] {
+  background: lightgray;
+  color: dimgray;
+}
 label:active {
   filter: contrast(0.8);
 }
@@ -112,6 +118,7 @@ input:focus {
 }
 
 t {
+  white-space: nowrap;
   margin: 1vw;
   text-align: right;
   line-height: initial;
@@ -154,6 +161,7 @@ input[type="radio"]:hover {
 input[type="checkbox"]:checked,
 input[type="radio"]:checked {
   background: #eee;
+  background: cyan;
   box-shadow: inset -6px -6px 9px 0px white,
     inset 6px 6px 9px 0px rgba(0, 0, 0, 0.4);
   border: 1px solid rgba(255, 255, 255, 0.5);

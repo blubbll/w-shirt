@@ -31,11 +31,13 @@
           Control:
         </h2>
         <form>
-          <label> <input type="radio" name="checkbox" value="1" />Mon. </label>
-          <label> <input type="radio" name="checkbox" value="2" />Di. </label>
-          <label> <input type="radio" name="checkbox" value="3" />Mi. </label>
-          <label> <input type="radio" name="checkbox" value="4" />Do. </label>
-          <label> <input type="radio" name="checkbox" value="5" />Fr. </label>
+          <label> <input type="radio" name="checkbox" value="1" data-js="mo"/>Montag </label>
+          <label> <input type="radio" name="checkbox" value="2" data-js="di" />Dienstag </label>
+          <label> <input type="radio" name="checkbox" value="3" data-js="mi"/>Mittwoch </label>
+          <label> <input type="radio" name="checkbox" value="4" data-js="do"/>Donnerstag </label>
+          <label> <input type="radio" name="checkbox" value="5" data-js="fr"/>Freitag </label>
+           <label disabled> <input type="radio" name="checkbox" data-js="sa" value="6" />Samstag </label>
+           <label disabled> <input type="radio" name="checkbox" data-js="so" value="7" />Sonntag </label>
           <t id="day">
             Tag: <input type="number" data-bind="value: Time.totalDay"
           /></t>
@@ -43,6 +45,9 @@
           <t id="color"> Farbe: <val data-bind="text: color"></val> </t>
           <t id="combos">
             Kombinationen: <val data-bind="text: combos"></val>
+          </t>
+          <t id="datum">
+            Datum: <val data-bind="text: `${Time.date().getDate()}.${Time.date().getMonth()}.${Time.date().getYear()}`"></val>
           </t>
         </form>
       </section>

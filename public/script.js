@@ -50,8 +50,10 @@ function nextDate(dayIndex) {
 }
 
 //Tag hinzufügen
-Date.prototype.addDays = days => {
-  return new Date(this.valueOf() + days * 864e5);
+const addDays = (date, days) => {
+  var result = new Date(date);
+  result.setDate(result.getDate() + days);
+  return result;
 };
 
 /*{
@@ -104,11 +106,17 @@ Date.prototype.addDays = days => {
 
 const permData = perm(colors);
 
+//custom periodic, emulated calendar.
+const d = new Date();
+
+const _totalDay = daysBetween(start, new Date());
+
 const tModel = {
   Time: {
-    weekday: ko.observable(0),
-    totalDay: ko.observable(0),
-    week: ko.observable(0)
+    weekDay: ko.observable(d.getDay()),
+    totalDay: ko.observable(_totalDay),
+    week: ko.observable(d.getWeekNumber()),
+    date: ko.observable(d)
   },
   combos: permData.length,
   color: ko.observable("gold"),
@@ -118,18 +126,123 @@ const tModel = {
   }
 };
 
-//fill all white
-for (const stroke of $$("svg>g>path")) {
-  stroke.style.stroke = "white";
-}
-
 tModel.Time.week.subscribe(newVal => {
   console.log(newVal);
 });
 
-tModel.Time.totalDay.subscribe(newVal => {
-  console.log(newVal);
+const updateUI = oldVal => {
+  oldVal = +oldVal;
+
+  //const date = new Date()
+  //date.setDate(date.getDate() + 1)
+  //dModel.Time.totalDay(new Date())
+  //dtModel.Time.week(new.getWeekNumber())
+
+  setTimeout(() => {
+    const newVal = tModel.Time.totalDay();
+
+    const clicked = +document.activeElement.value === tModel.Time.weekDay();
+    /* console.log({
+      clicked: +document.activeElement.value,
+      shouldbe: tModel.Time.weekDay(),
+      or: oldVal
+    });*/
+
+    //move in week
+    if (!clicked) {
+      oldVal > newVal
+        ? [tModel.Time.weekDay(tModel.Time.weekDay() - 1)]
+        : [tModel.Time.weekDay(tModel.Time.weekDay() + 1)];
+
+      if (newVal !== 0) {
+        //we hit sunday from mon, go a week back
+        if (oldVal > newVal && tModel.Time.weekDay() === 0) {
+          tModel.Time.week(tModel.Time.week() - 1);
+          const chk = $$("input")[7 - 1];
+          chk && [(chk.checked = true)];
+          tModel.Time.weekDay(7);
+        }
+        //we hit monday from sun, go a week forth
+        else if (oldVal < newVal && tModel.Time.weekDay() === 8) {
+          tModel.Time.week(tModel.Time.week() + 1);
+          const chk = $$("input")[1 - 1];
+          chk && [(chk.checked = true)];
+          tModel.Time.weekDay(1);
+        } else {
+          const _wDay = tModel.Time.weekDay();
+          const chk = $$("input")[_wDay - 1];
+          chk && [(chk.checked = true)];
+        }
+      }
+    }
+    {
+      //update colors
+      tModel.color(permData[tModel.Time.week()][tModel.Time.weekDay() - 1]);
+      //update actual date
+      tModel.Time.date(addDays(tModel.Time.date(), tModel.Time.totalDay()));
+    }
+  });
+};
+
+const updateWeekday = newWeekday => {
+  newWeekday = +newWeekday;
+
+  const newDay =
+    +tModel.Time.totalDay() + -(tModel.Time.weekDay() - newWeekday);
+  tModel.Time.totalDay(newDay);
+
+  newWeekday < tModel.Time.weekDay()
+    ? [
+        console.log("went " + (tModel.Time.weekDay() - newWeekday) + " down"),
+        tModel.Time.weekDay(newWeekday)
+      ]
+    : [
+        console.log("went " + -(tModel.Time.weekDay() - newWeekday) + " up"),
+        tModel.Time.weekDay(newWeekday)
+      ];
+};
+
+tModel.Time.totalDay.subscribe(updateUI, null, "beforeChange");
+
+//reflect color updates
+tModel.color.subscribe(newVal => {
+  if (tModel.Time.weekDay() > 5) [tModel.color("???"), (newVal = "gray")];
+
+  $("#color>val").style.color = newVal;
+  $("svg>g>path#main").style.fill = newVal;
 });
+
+//format date
+/*tModel.Time.date.subscribe(newVal => {
+  let d = tModel.Time.date();
+  if(d.includes("."))
+
+  tModel.Time.date(`${d.getDate()}.${d.getMonth()}${d.getYear()}`);
+});*/
+
+for (const _input of $$("input[type=radio]")) {
+  _input.addEventListener("change", e => {
+    updateWeekday(+e.target.value);
+    //calc new day
+    //tModel.Time.weekDay(+e.target.value - 1);
+  });
+}
 
 //bindings
 ko.applyBindings(tModel);
+
+//init
+{
+  //fill all white
+  for (const stroke of $$("svg>g>path")) {
+    stroke.style.stroke = "white";
+  }
+  const _wDay = tModel.Time.weekDay();
+  const chk = $$("input")[_wDay - 1];
+  chk && [($$("input")[_wDay - 1].checked = true)];
+
+  //init color
+  tModel.color(permData[tModel.Time.week()][tModel.Time.weekDay() - 1]);
+  //init date
+  tModel.Time.date(addDays(tModel.Time.date(), tModel.Time.totalDay()));
+}
