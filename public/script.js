@@ -102,13 +102,15 @@ Date.prototype.addDays = days => {
 }
 */
 
+const permData = perm(colors);
+
 const tModel = {
   Time: {
     weekday: ko.observable(0),
-    totalDay2: ko.observable(0),
-    totalDay: { value: ko.observable(0) },
+    totalDay: ko.observable(0),
     week: ko.observable(0)
   },
+  combos: permData.length,
   color: ko.observable("gold"),
 
   toggleFoodlist: () => {
@@ -116,22 +118,17 @@ const tModel = {
   }
 };
 
-{
-  tModel.Time.totalDay.computer = ko.computed({
-    //return a formatted price
-    read: () => {
-      return tModel.Time.totalDay.value();
-    },
-    //if the value changes, make sure that we store a number back to price
-    write: newValue => {
-      tModel.Time.totalDay.value(newValue);
-    },
-    owner: this
-  });
+//fill all white
+for (const stroke of $$("svg>g>path")) {
+  stroke.style.stroke = "white";
 }
 
-tModel.Time.week.subscribe(function(newText) {
-  console.log(newText);
+tModel.Time.week.subscribe(newVal => {
+  console.log(newVal);
+});
+
+tModel.Time.totalDay.subscribe(newVal => {
+  console.log(newVal);
 });
 
 //bindings

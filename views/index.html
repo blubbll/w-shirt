@@ -26,8 +26,28 @@
   </head>
   <body>
     <div class="corners">
+      <section>
+        <h2>
+          Control:
+        </h2>
+        <form>
+          <label> <input type="radio" name="checkbox" value="1" />Mon. </label>
+          <label> <input type="radio" name="checkbox" value="2" />Di. </label>
+          <label> <input type="radio" name="checkbox" value="3" />Mi. </label>
+          <label> <input type="radio" name="checkbox" value="4" />Do. </label>
+          <label> <input type="radio" name="checkbox" value="5" />Fr. </label>
+          <t id="day">
+            Tag: <input type="number" data-bind="value: Time.totalDay"
+          /></t>
+          <t id="week"> Woche: <val data-bind="text: Time.week"></val></t>
+          <t id="color"> Farbe: <val data-bind="text: color"></val> </t>
+          <t id="combos">
+            Kombinationen: <val data-bind="text: combos"></val>
+          </t>
+        </form>
+      </section>
       <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 360 200">
-        <g transform="translate(75,-700)">
+        <g transform="translate(30,-700)">
           <path
             id="main"
             d="m126,724.61218c11.26193,1.51193 20.64389,1.14389 29.25,0l5.25,7.25c22.64389,8.58228 35.76552,7.64574 60,21-3.11888,10.48578-3.70615,21.98421-13,30-7.75-6.08798-15.5-4.79991-23.25-6.75v88.25c-29.12786,5.30148-58.03698,6.66566-86.5,0v-88.25c-6.74079.75138-12.34188.20025-23.5,6-8.37586-6.98544-10.99052-18.45182-13.5-30 25.95395-11.67055 39.00517-13.26167 60.25-19.75l5-7.75z"
@@ -86,22 +106,6 @@
           />
         </g>
       </svg>
-
-      <section>
-        <h2>
-          Control:
-        </h2>
-        <form>
-          <label> <input type="radio" name="checkbox" value="1" />Mon. </label>
-          <label> <input type="radio" name="checkbox" value="2" />Di. </label>
-          <label> <input type="radio" name="checkbox" value="3" />Mi. </label>
-          <label> <input type="radio" name="checkbox" value="4" />Do. </label>
-          <label> <input type="radio" name="checkbox" value="5" />Fr. </label>
-          <t id="day"> Tag: <input type="number" data-bind="value: Time.totalDay2"/></t>
-          <t id="week"> Woche: <val data-bind="text: Time.week"></val></t>
-          <t id="color"> Farbe: <val data-bind="text: color"></val> </t>
-        </form>
-      </section>
     </div>
   </body>
 </html>

@@ -2,6 +2,7 @@ html,
 body {
   height: 100%;
 }
+
 * {
   box-sizing: border-box;
 }
@@ -21,25 +22,26 @@ svg {
   height: inherit;*/
   height: 100%;
   width: inherit;
+  align-self: center;
 }
 
 .corners {
   background: #f6f6f6;
   position: relative;
   width: 80vw;
-  height: 80vw;
-  max-height: 80vh;
   box-shadow: 0 1px 7px hsla(0, 0%, 0%, 0.2);
+  display: flex;
 }
 
 section {
-  position: absolute;
   top: 0;
-  margin: 15px 0;
-  border: 1px dashed black;
+  margin: 1vw;
+  border: 0.1vw dashed black;
 }
+
 section h2 {
-  margin-left: 5px;
+  margin: 2vw 1vw;
+  text-align: right;
   font-size: 4vw;
 }
 
@@ -54,10 +56,12 @@ section h2 {
   width: 100px;
   box-shadow: 0 5px 10px -7px hsla(0, 0%, 0%, 0.5);
 }
+
 .corners:after {
   left: -50px;
   transform: rotate(-45deg);
 }
+
 .corners:before {
   right: -50px;
   transform: rotate(45deg);
@@ -69,6 +73,7 @@ section > form {
   flex-direction: column;
   font-size: 3vw;
 }
+
 input {
   margin-top: 1vw;
   outline: 0;
@@ -83,33 +88,42 @@ input {
   border-radius: 16px;
   padding: 15px 16px;
 }
+
 label {
   cursor: pointer;
   user-select: none;
 }
+
 label:hover {
   background: cyan;
 }
+
 label:active {
   filter: contrast(0.8);
 }
+
 input:hover {
   border-color: white;
 }
+
 input:active,
 input:focus {
   background: white;
 }
+
 t {
   margin: 1vw;
   text-align: right;
+  line-height: initial;
 }
+
 t > input {
   width: 7vw;
   text-align: right;
   padding-left: 0;
   padding-right: 0;
 }
+
 t > val {
   color: cyan;
   padding: 0 2px 2px 0;
@@ -117,6 +131,7 @@ t > val {
   box-shadow: 1px 1px 1px black;
   text-shadow: 1px 1px 2px black;
 }
+
 input[type="checkbox"],
 input[type="radio"] {
   cursor: pointer;
@@ -127,14 +142,15 @@ input[type="radio"] {
   height: 3vw;
   width: 3vw;
   padding: 0px;
-
   margin: 1vw;
   vertical-align: -1vw;
 }
+
 input[type="checkbox"]:hover,
 input[type="radio"]:hover {
   border-color: white;
 }
+
 input[type="checkbox"]:checked,
 input[type="radio"]:checked {
   background: #eee;
@@ -143,6 +159,7 @@ input[type="radio"]:checked {
   border: 1px solid rgba(255, 255, 255, 0.5);
   border-radius: 16px;
 }
+
 input[type="checkbox"]:checked:hover,
 input[type="radio"]:checked:hover {
   border-color: white;
@@ -151,9 +168,11 @@ input[type="radio"]:checked:hover {
 input[type="checkbox"] {
   border-radius: 4px;
 }
+
 input[type="checkbox"]:checked {
   border-radius: 4px;
 }
+
 input[type="checkbox"]:checked:after {
   content: "✓";
   display: block;
