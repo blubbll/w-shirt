@@ -41,13 +41,13 @@
           <t id="day">
             Tag: <input type="number" data-bind="value: Time.totalDay"
           /></t>
-          <t id="week"> Woche: <val data-bind="text: Time.week"></val></t>
+          <t id="week"> Woche: <val data-bind="text: Time.week()"></val></t>
           <t id="color"> Farbe: <val data-bind="text: color"></val> </t>
           <t id="combos">
             Kombinationen: <val data-bind="text: combos"></val>
           </t>
           <t id="datum">
-            Datum: <val data-bind="text: `${Time.date().getDate()}.${Time.date().getMonth()}.${Time.date().getYear()}`"></val>
+            Datum: <val data-bind="text: `${Time.date().toLocaleDateString()}`"></val>
           </t>
         </form>
       </section>
