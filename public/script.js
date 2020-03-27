@@ -166,27 +166,51 @@ const updateUI = oldVal => {
 const updateWeekday = newWeekday => {
   newWeekday = +newWeekday;
 
+  //debug
   newWeekday < tModel.Time.date().getDay() + 1
     ? [
         console.debug({
           action: "going down",
-          by: (tModel.Time.date().getDay() - newWeekday),
-          from: tModel.Time.date(),
-          
-          to: addDays(tModel.Time.date(), -(tModel.Time.date().getDay() - newWeekday))
-        }),
-        tModel.Time.date(addDays(tModel.Time.date(), -(tModel.Time.date().getDay() - newWeekday)))
+          by: tModel.Time.date().getDay() - newWeekday,
+          from: tModel.Time.date().toLocaleDateString(),
+
+          to:
+            addDays(
+              tModel.Time.date(),
+              -(tModel.Time.date().getDay() - newWeekday)
+            ).toLocaleDateString() +
+            `[#${daysBetween(
+              $start,
+              addDays(
+                tModel.Time.date(),
+                -(tModel.Time.date().getDay() - newWeekday)
+              )
+            )}]`
+        })
       ]
     : [
         console.debug({
           action: "going up",
           by: -(tModel.Time.date().getDay() - newWeekday),
-          from: tModel.Time.date(),
-          
-          to: addDays(tModel.Time.date(), -(tModel.Time.date().getDay() - newWeekday))
-        }),
-       tModel.Time.date(addDays(tModel.Time.date(), -(tModel.Time.date().getDay() - newWeekday)))
+          from: tModel.Time.date().toLocaleDateString(),
+          to:
+            addDays(
+              tModel.Time.date(),
+              -(tModel.Time.date().getDay() - newWeekday)
+            ).toLocaleDateString() +
+            `[#${daysBetween(
+              $start,
+              addDays(
+                tModel.Time.date(),
+                -(tModel.Time.date().getDay() - newWeekday)
+              )
+            )}]`
+        })
       ];
+  tModel.Time.date(
+    addDays(tModel.Time.date(), -(tModel.Time.date().getDay() - newWeekday))
+  );
+
   tModel.Time.totalDay(daysBetween($start, tModel.Time.date()));
   //console.log(tModel.Time.date())
 };
