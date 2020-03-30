@@ -101,8 +101,8 @@ const $start = new Date("2020-01-01");
 const tModel = {
   Time: {
     totalDay: ko.observable(daysBetween($start, new Date())),
-    date: ko.observable($start),
-    week: ko.observable($start.getWeek())
+    weekDay: ko.observable(1),
+    date: ko.observable($start)
   },
   combos: permData.length,
   color: ko.observable("gold"),
@@ -133,23 +133,57 @@ const updateUI = oldVal => {
 
     //move in week
     if (!clicked) {
+      oldVal - newVal > -1
+        ? console.debug({
+            action: "going down",
+            by: oldVal - newVal,
+            from:
+              tModel.Time.date().toLocaleDateString() +
+              `[#t${tModel.Time.totalDay()}`,
+            to:
+              addDays(
+                tModel.Time.date(),
+                -(tModel.Time.weekDay()  - newVal)
+              ).toLocaleDateString() +
+              `[#${daysBetween(
+                $start,
+                addDays(tModel.Time.date(), -(tModel.Time.totalDay() - newVal))
+              )}]`
+          })
+        : console.debug({
+            action: "going up",
+            by: newVal - oldVal,
+            from:
+              tModel.Time.date().toLocaleDateString() +
+              `[#t${tModel.Time.totalDay()}`,
+            to:
+              addDays(
+                tModel.Time.date(),
+                -(tModel.Time.weekDay() - newVal)
+              ).toLocaleDateString() +
+              `[#${daysBetween(
+                $start,
+                addDays(tModel.Time.date(), -(tModel.Time.totalDay() - newVal))
+              )}]`
+          });
+
       if (newVal !== 0) {
         //we hit sunday from mon, go a week back
-        if (oldVal > newVal && tModel.Time.date().getDay() === 5) {
-          tModel.Time.week(tModel.Time.date().getWeek() - 1);
+        if (oldVal > newVal && tModel.Time.weekDay()  === 5) {
+          //tModel.Time.week(tModel.Time.date().getWeek() - 1);
           const chk = $$("input")[7 - 1];
           chk && [(chk.checked = true)];
           tModel.Time.date(addDays(tModel.Time.date(), -1));
         }
         //we hit monday from sun, go a week forth
-        else if (oldVal < newVal && tModel.Time.date().getDay() === 0) {
+        else if (oldVal < newVal && tModel.Time.weekDay()  === 0) {
           tModel.Time.week(tModel.Time.date().getWeek() + 1);
           const chk = $$("input")[1 - 1];
           chk && [(chk.checked = true)];
 
           tModel.Time.date(addDays(tModel.Time.date(), 1));
         } else {
-          const chk = $$("input")[tModel.Time.date().getDay() - 1];
+          const chk = $$("input")[tModel.Time.weekDay()  - 1];
           chk && [(chk.checked = true)];
         }
       }
@@ -157,7 +191,7 @@ const updateUI = oldVal => {
     {
       //update colors
       tModel.color(
-        permData[tModel.Time.date().getWeek()][tModel.Time.date().getDay() - 1]
+        permData[tModel.Time.date().getWeek()][tModel.Time.weekDay()  - 1]
       );
     }
   });
@@ -166,51 +200,67 @@ const updateUI = oldVal => {
 const updateWeekday = newWeekday => {
   newWeekday = +newWeekday;
 
+    if(newWeekday === -6)
+    newWeekday = 1;
+  
   //debug
-  newWeekday < tModel.Time.date().getDay() + 1
+  //tModel.Time.date()weekDay()  === 0 ||
+  newWeekday < tModel.Time.weekDay()  + 1
     ? [
         console.debug({
-          action: "going down",
-          by: tModel.Time.date().getDay() - newWeekday,
-          from: tModel.Time.date().toLocaleDateString(),
-
+          action: "clicking down",
+          by: tModel.Time.weekDay() - newWeekday,
+          from:
+            tModel.Time.date().toLocaleDateString() +
+            `[#${tModel.Time.totalDay()}]` +
+            `[w#${tModel.Time.weekDay()}]`,
           to:
             addDays(
               tModel.Time.date(),
-              -(tModel.Time.date().getDay() - newWeekday)
+              -(tModel.Time.weekDay()  - newWeekday)
             ).toLocaleDateString() +
             `[#${daysBetween(
               $start,
               addDays(
                 tModel.Time.date(),
-                -(tModel.Time.date().getDay() - newWeekday)
+                -(tModel.Time.weekDay()  - newWeekday)
               )
-            )}]`
+            )}]` +
+            `[w#${newWeekday}]`
         })
       ]
     : [
         console.debug({
-          action: "going up",
-          by: -(tModel.Time.date().getDay() - newWeekday),
-          from: tModel.Time.date().toLocaleDateString(),
+          action: "clicking up",
+          by: -(tModel.Time.weekDay()  - newWeekday),
+          from:
+            tModel.Time.date().toLocaleDateString() +
+            `[#${tModel.Time.totalDay()}]` +
+            `[w#${tModel.Time.weekDay() }]`,
           to:
             addDays(
               tModel.Time.date(),
-              -(tModel.Time.date().getDay() - newWeekday)
+              -(tModel.Time.weekDay()  - newWeekday)
             ).toLocaleDateString() +
             `[#${daysBetween(
               $start,
               addDays(
                 tModel.Time.date(),
-                -(tModel.Time.date().getDay() - newWeekday)
+                -(tModel.Time.weekDay()  - newWeekday)
               )
-            )}]`
+            )}]` +
+            `[w#${newWeekday}]`
         })
       ];
-  tModel.Time.date(
-    addDays(tModel.Time.date(), -(tModel.Time.date().getDay() - newWeekday))
-  );
 
+  //update Date
+  tModel.Time.date(
+    addDays(tModel.Time.date(), -(tModel.Time.weekDay()  - newWeekday))
+  );
+  //update Weekday
+  tModel.Time.weekDay(newWeekday);
+  
+  //update totalDay
   tModel.Time.totalDay(daysBetween($start, tModel.Time.date()));
   //console.log(tModel.Time.date())
 };
@@ -219,17 +269,27 @@ tModel.Time.totalDay.subscribe(updateUI, null, "beforeChange");
 
 //reflect color updates
 tModel.color.subscribe(newVal => {
-  if (tModel.Time.date().getDay() > 5) [tModel.color("???"), (newVal = "gray")];
+  if (tModel.Time.weekDay()  > 5) [tModel.color("???"), (newVal = "gray")];
 
   $("#color>val").style.color = newVal;
   $("svg>g>path#main").style.fill = newVal;
 });
 
 for (const _input of $$("input[type=radio]")) {
-  _input.addEventListener("change", e => {
-    updateWeekday(+e.target.value);
+  _input.addEventListener("change", event => {
+    updateWeekday(+event.target.value);
     //calc new day
     //tModel.Time.weekDay(+e.target.value - 1);
+  });
+}
+
+//lastpass fix
+for (const _input of $$("t>input")) {
+  _input.addEventListener("keydown", event => {
+    if (event.which == 13 || event.keyCode == 13) {
+      //event.preventDefault();
+      event.stopPropagation();
+    }
   });
 }
 
@@ -246,14 +306,14 @@ ko.applyBindings(tModel);
   tModel.Time.date(new Date());
   //tModel.Time.date(addDays(tModel.Time.date(), tModel.Time.totalDay()));
 
-  tModel.Time.week(tModel.Time.date().getWeek());
+  //tModel.Time.week(tModel.Time.date().getWeek());
 
-  const _wDay = tModel.Time.date().getDay();
+  const _wDay = tModel.Time.weekDay() ;
   const chk = $$("input")[_wDay - 1];
   chk && [(chk.checked = true)];
 
   //init color
   tModel.color(
-    permData[tModel.Time.date().getDay()][tModel.Time.date().getDay() - 1]
+    permData[tModel.Time.weekDay() ][tModel.Time.weekDay()  - 1]
   );
 }

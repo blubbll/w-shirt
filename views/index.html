@@ -4,7 +4,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <title>Welcome to Glitch!</title>
+    <title>w-shirt</title>
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content="A cool thing made with Glitch" />
@@ -30,7 +30,7 @@
         <h2>
           Control:
         </h2>
-        <form>
+        <form data-bind="submit: ()=>{event.stopPropagation()}">
           <label> <input type="radio" name="checkbox" value="1" data-js="mo"/>Montag </label>
           <label> <input type="radio" name="checkbox" value="2" data-js="di" />Dienstag </label>
           <label> <input type="radio" name="checkbox" value="3" data-js="mi"/>Mittwoch </label>
@@ -39,9 +39,9 @@
            <label disabled> <input type="radio" name="checkbox" data-js="sa" value="6" />Samstag </label>
            <label disabled> <input type="radio" name="checkbox" data-js="so" value="7" />Sonntag </label>
           <t id="day">
-            Tag: <input type="number" data-bind="value: Time.totalDay"
+            Tag: <input type="number" data-bind="value: Time.totalDay||0"
           /></t>
-          <t id="week"> Woche: <val data-bind="text: Time.week()"></val></t>
+          <t id="week"> Woche: <val data-bind="text: Time.date().getWeek()"></val></t>
           <t id="color"> Farbe: <val data-bind="text: color"></val> </t>
           <t id="combos">
             Kombinationen: <val data-bind="text: combos"></val>
