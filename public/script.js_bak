@@ -37,50 +37,51 @@ const perm = xs => {
       }
     }
   }
-  return ret.sort(function() {
-    return 0.5 - Math.random();
-  });
+  return ret;
 };
 
 const permData = perm(colors);
 
-const $start = new Date(`${new Date().getFullYear()}-01-01`);
+const $start = new Date("2020-01-01");
 const tModel = {
-  day: ko.observable($start),
+  Time: {
+    totalDay: ko.observable(1),
+    week: ko.observable(1),
+    weekDay: ko.observable($start.getDay() === 0 ? 7 : $start.getDay()),
+    date: ko.observable($start)
+  },
   combos: permData.length,
   color: ko.observable("gold"),
+
   toggleFoodlist: () => {
     tModel.Food.listExpanded(!tModel.Food.listExpanded());
   }
 };
 
 Date.prototype.addDays = function(days) {
-  var date = new Date(this.valueOf());
-  date.setDate(date.getDate() + days);
-  return date;
-};
-
-Date.prototype.dayOfYear = function() {
-  var j1 = new Date(this);
-  j1.setMonth(0, 0);
-  return Math.round((this - j1) / 8.64e7);
-};
+    var date = new Date(this.valueOf());
+    date.setDate(date.getDate() + days);
+    return date;
+}
 
 const updateUI = oldVal => {
-  const $day = tModel.day;
+  const $Time = tModel.Time;
   oldVal = +oldVal;
 
+
   const clicked = $("input[type=radio]:focus") !== null;
-
-
   
+
   setTimeout(() => {
-    const newWeekday = $day.getDay() === 0 ? 7 : $day.getDay();
+    const newWeekday = $Time.date().getDay() === 0 ? 7 : $Time.date().getDay();
 
-    const chk = $$("input")[newWeekday - 1];
-    console.log(chk);
-    chk && [(chk.checked = true)];
-
+    
+    
+     $Time.weekDay(newWeekday);
+        const chk = $$("input")[newWeekday - 1];
+         console.log(chk)
+        chk && [(chk.checked = true)];
+    
     //move in week
     /*if (!clicked) {
       const newVal = +$Time.totalDay();
@@ -135,25 +136,7 @@ const updateUI = oldVal => {
 };
 
 const updateByClick = newWeekday => {
-  
-  const $day = tModel.day;
-  
-  console.log($day().getDay())
-  
-  console.log(newWeekday)
-  
-  tModel.color(permData[$day().getWeek()][newWeekday]);
-  
-  if(newWeekday > $day().getDay()){
- 
-    console.debug("up");
-    
-    console.log(newWeekday-$day().getDay())
-    
-    $day($day().addDays($day().getDay() - newWeekday))
-  }
-  
-  /* const $Time = tModel.Time;
+ /* const $Time = tModel.Time;
   newWeekday = +newWeekday;
 
 
@@ -227,9 +210,11 @@ const updateByClick = newWeekday => {
   */
 };
 
+tModel.Time.totalDay.subscribe(updateUI, null, "beforeChange");
+
 //reflect color updates
 tModel.color.subscribe(newVal => {
-  if (tModel.day().getDay() > 5) [tModel.color("???"), (newVal = "gray")];
+  if (tModel.Time.weekDay() > 5) [tModel.color("???"), (newVal = "gray")];
 
   $("#color>val").style.color = newVal;
   $("#shirt>g>path#main").style.fill = newVal;
@@ -258,7 +243,7 @@ ko.applyBindings(tModel);
 
 //init
 {
-  const $day = tModel.day;
+  const $Time = tModel.Time;
   //fill all white
   for (const stroke of $$("svg>g>path")) {
     stroke.style.stroke = "white";
@@ -268,18 +253,18 @@ ko.applyBindings(tModel);
     // $Time.totalDay(daysBetween($start, new Date())+2);
   }
 
-  const _wDay = $day().getDay();
+  const _wDay = $Time.weekDay();
   const chk = $$("input")[_wDay - 1];
   chk && [(chk.checked = true)];
-
-  var start = { id: 3, date: $day().getDay() };
+  
+  var start = {id: 3, date: $Time.date().getDay()};
   for (const dayCheck of $$("input[type=radio]")) {
-    dayCheck.setAttribute("date", $start.addDays(1));
+    if(dayCheck.getAttribute("value") == start.id){
+      dayCheck.setAttribute("date", $start)
+    } else dayCheck.setAttribute("date", $start.addDays(1))
     //dayCheck.setAttribute()
   }
-  
-  tModel.color(permData[$day().getWeek()][$day().getDay()]);
 
   //init color
-  //tModel.color(permData[$Time.weekDay()][$Time.weekDay() - 1]);
+  tModel.color(permData[$Time.weekDay()][$Time.weekDay() - 1]);
 }
