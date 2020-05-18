@@ -115,7 +115,7 @@ tModel.shirtColor.subscribe(newVal => {
     
     
      //pants we
-    $("#pants g").style.fill = $tyme().wnumber % 2 === 0 ? "black" : "navy"
+    $("#pants g").style.fill = $tyme().wnumber % 2 === 0 ? "black" : "MidnightBlue"
     
   } else {
     $("d").style.backgroundImage = `url(${newVal.url})`;
@@ -124,7 +124,7 @@ tModel.shirtColor.subscribe(newVal => {
     $("#color>val").style.color = newVal;
     
      //pants
-    $("#pants g").style.fill = $tyme().day % 2 === 0 ? "black" : "#00003f"
+    $("#pants g").style.fill = $tyme().day % 2 === 0 ? "black" : "MidnightBlue"
   }
 
  
