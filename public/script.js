@@ -41,22 +41,12 @@ Array.from(Array(52 * 7)).forEach((x, i) => {
     wday: (i % 7) + 1,
     week: Math.floor(i / 7) + 1,
     month: Math.floor(i / 28) + 1,
-    mday: (i % 28) === 0 ? 28 : (i % 28)
+    mday: i % 28 === 0 ? 28 : i % 28
   });
 });
 
 const tModel = {
-  tyme: {
-    //virtual time haha, cuz screw reality
-    day: ko.observable(1), // 1-364
-    week: ko.observable(1), //1-52
-    month: ko.observable(1),
-    //year: ko.observable(0), //...maybe later hm
-    /*getWeek: () => {
-      return Math.floor(tModel.tyme.day() / 7);
-    }*/
-  },
-
+  tyme: ko.observable($tymes[0]),
   combos: permData.length,
   color: ko.observable("gold")
 };
@@ -85,25 +75,27 @@ const updateUI = oldVal => {
 const updateByClick = newWeekday => {
   const $tyme = tModel.tyme;
 
-  console.log($tymes.find(x => x.wday === newWeekday && x.week === $tyme.week()))
-   console.log($tymes.find(x => x.wday === newWeekday))
-  
-  $tyme.day($tymes.find(x => x.wday === newWeekday && x.week === $tyme.week()));
-
-  tModel.color(permData[$tyme.week()][newWeekday]);
-
-  if (newWeekday > $tyme.day()) {
+  if (newWeekday > $tyme().day) {
     console.debug("up");
-
-    console.log(newWeekday - $tyme.day());
-
-    //$day($day().addDays($day().getDay() - newWeekday));
   }
+
+  //update tyme based on new weekday
+  $tyme($tymes.find(x => x.wday === newWeekday && x.week === $tyme().week));
+
+  tModel.color(permData[$tyme().week-1][$tyme().wday-1]);
 };
 
 //reflect color updates
 tModel.color.subscribe(newVal => {
-  if (tModel.tyme.day() > 5) [tModel.color("???"), (newVal = "gray")];
+  
+
+  
+  const $tyme = tModel.tyme;
+  
+ 
+  
+  
+  if ($tyme().wday > 5) [tModel.color("???"), (newVal = "gold")];
 
   $("#color>val").style.color = newVal;
   $("#shirt>g>path#main").style.fill = newVal;
@@ -133,27 +125,22 @@ ko.applyBindings(tModel);
 //init
 {
   const $tyme = tModel.tyme;
-  //fill all white
-  for (const stroke of $$("svg>g>path")) {
-    stroke.style.stroke = "white";
-  }
+
   {
-    //init totalday
-    // $Time.totalDay(daysBetween($start, new Date())+2);
+    //fill all white
+    for (const stroke of $$("svg>g>path")) {
+      stroke.style.stroke = "white";
+    }
+
+    //init checkbox
+    const chk = $$("input")[$tyme().wday];
+    chk && [(chk.checked = true)];
+
+
+    
+ 
+    
+    //init color <todo
+    tModel.color(permData[$tyme().week-1][$tyme().day-1]);
   }
-
-  const _wDay = $tyme.day() % 7 === 0 ? 7 : $tyme.day() % 7;
-  const chk = $$("input")[_wDay - 1];
-  chk && [(chk.checked = true)];
-
-  /*var start = { id: 3, date: $day().getDay() };
-  for (const dayCheck of $$("input[type=radio]")) {
-    dayCheck.setAttribute("date", $start.addDays(1));
-    //dayCheck.setAttribute()
-  }*/
-
-  tModel.color(permData[$tyme.week()][$tyme.day()]);
-
-  //init color
-  //tModel.color(permData[$Time.weekDay()][$Time.weekDay() - 1]);
 }
