@@ -68,9 +68,9 @@
             <input type="radio" name="checkbox" data-js="so" value="7" />Sonntag
           </label>
           <t id="day">
-            Tag: <input type="number" data-bind="value: day().dayOfYear()||0"
+            Tag: <input type="number" data-bind="value: tyme.day()||0"
           /></t>
-          <t id="week"> Woche: <val data-bind="text: day().getWeek()"></val></t>
+          <t id="week"> Woche: <val data-bind="text: tyme.week()"></val></t>
           <t id="color"> Farbe: <val data-bind="text: color"></val> </t>
           <t id="combos">
             Kombinationen: <val data-bind="text: combos"></val>
