@@ -27,12 +27,31 @@ svgs {
 }
 
 d {
-  height: 30%;
-  width: 100%;
+  top: 0;
+  left: 30%;
+  height: 50%;
+  width: 50vw;
   position: absolute;
-  mix-blend-mode: soft-light;
+  mix-blend-mode: overlay;
+  opacity: 0.8;
+  border-radius: 50%;
 }
+jeans {
+  bottom: 0;
+  left: 30%;
+  height: 50%;
+  width: 50vw;
+  position: absolute;
+  mix-blend-mode: lighten;
+  opacity: 0.75;
+  border-radius: 50%;
 
+  background-image: url(https://cdn.glitch.com/a7238b99-ec4e-4f0c-b0d1-60aaad6aed4c%2Fjeans-summer-navy-muster--177_poso_M18_010.jpg?v=1589834108538);
+}
+#shirt path {
+  fill: gray;
+  stroke: black;
+}
 svg {
   /*width: inherit;
   height: inherit;*/

@@ -88,7 +88,7 @@ const $tymes = [];
 const tModel = {
   tyme: ko.observable($tymes[0]),
   combos: permData.length,
-  shirtColor: ko.observable("gold")
+  shirtColor: ko.observable({name: "???", url: ""})
 };
 
 const updateByClick = newWeekday => {
@@ -109,24 +109,26 @@ tModel.shirtColor.subscribe(newVal => {
   const $tyme = tModel.tyme;
 
   if ($tyme().wday > 5) {
-    tModel.shirtColor("???"), (newVal = "white");
+    tModel.shirtColor("???"), (newVal = "silver");
 
-    $("d").style.backgroundColor = newVal.url
+    $("d").style.backgroundImage = "";
+    
+    
+     //pants we
+    $("#pants g").style.fill = $tyme().wnumber % 2 === 0 ? "black" : "navy"
+    
   } else {
-    //apply default stroke to outline (white)
-    for (const stroke of $$("svg#shirt>g>path")) {
-      stroke.style.stroke = "white";
-    }
-
-    //update pants
-    for (const stroke of $$("svg#pants>g>path")) {
-      stroke.style.fill = $tyme().day % 2 === 0 ? "navy" : "black";
-    }
+    $("d").style.backgroundImage = `url(${newVal.url})`;
 
     //update colorname
     $("#color>val").style.color = newVal;
+    
+     //pants
+    $("#pants g").style.fill = $tyme().day % 2 === 0 ? "black" : "#00003f"
   }
 
+ 
+  
   //color shirt
   $("#shirt>g>path#main").style.fill = newVal;
 });
