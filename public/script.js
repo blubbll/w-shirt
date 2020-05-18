@@ -7,7 +7,33 @@ const $ = document.querySelector.bind(document);
 const $$ = document.querySelectorAll.bind(document);
 
 //https://www.jeans-fritz.de/regular-fit-hemd-mit-kleinem-karo-0110709.html?farbpalette=86&catId=64
-const colors = ["RoyalBlue", "DarkSeaGreen", "tomato", "LightGrey", "DodgerBlue"];
+const colors = [
+  {
+    name: "rot",
+    url:
+      "https://cdn.glitch.com/a7238b99-ec4e-4f0c-b0d1-60aaad6aed4c%2Frot.jpg?v=1589832953804"
+  },
+  {
+    name: "blau",
+    url:
+      "https://cdn.glitch.com/a7238b99-ec4e-4f0c-b0d1-60aaad6aed4c%2Fblau.jpg?v=1589832908429"
+  },
+  {
+    name: "marine",
+    url:
+      "https://cdn.glitch.com/a7238b99-ec4e-4f0c-b0d1-60aaad6aed4c%2Fmarine.jpg?v=1589832866953"
+  },
+  {
+    name: "schwarz",
+    url:
+      "https://cdn.glitch.com/a7238b99-ec4e-4f0c-b0d1-60aaad6aed4c%2Fschwarz.jpg?v=1589832785611"
+  },
+  {
+    name: "gruen",
+    url:
+      "https://cdn.glitch.com/a7238b99-ec4e-4f0c-b0d1-60aaad6aed4c%2Fgruen.jpg?v=1589832821130"
+  }
+];
 
 //Tage zwischen
 const daysBetween = (one, another) => {
@@ -85,12 +111,7 @@ tModel.shirtColor.subscribe(newVal => {
   if ($tyme().wday > 5) {
     tModel.shirtColor("???"), (newVal = "white");
 
-    for (const stroke of $$("svg#shirt>g>path")) {
-      //color shirt black
-      stroke.style.stroke = "black";
-      //update colorname
-      $("#color>val").style.color = "black";
-    }
+    $("d").style.backgroundColor = newVal.url
   } else {
     //apply default stroke to outline (white)
     for (const stroke of $$("svg#shirt>g>path")) {
