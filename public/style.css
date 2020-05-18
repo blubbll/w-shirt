@@ -33,7 +33,9 @@ svg {
   width: inherit;
   align-self: center;
 }
-
+#pants{
+  margin-right: .75rem;
+}
 .corners {
   background: #f6f6f6;
   position: relative;
